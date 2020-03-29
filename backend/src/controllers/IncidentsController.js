@@ -10,7 +10,7 @@ module.exports = {
       .offset((page - 1) * 5)
       .select("*");
 
-    res.harders("X-Total-Count", count);
+    res.headers("X-Total-Count", count);
 
     return res.json(incidents);
   },
@@ -18,29 +18,26 @@ module.exports = {
   async create(req, res) {
     const { title, description, value } = req.body;
 
-    const ong_id = req.harders.ong;
+    const ong_id = req.headers.authorization;
 
-    await connection("incidents")
-      .returning("id")
-      .insert({
-        title,
-        description,
-        value,
-        ong_id
-      });
+    const [id] = await connection("incidents").insert({
+      title,
+      description,
+      value,
+      ong_id
+    });
 
     return res.json({ id });
   },
 
   async delete(req, res) {
     const { id } = req.params;
-    const ong_id = req.harders.ong;
+    const ong_id = req.headers.authorization;
 
     const incident = await connection("incidents")
       .where("id", id)
       .andWhere("ong_id", ong_id)
-      .select("id")
-      .fist();
+      .select("id");
 
     if (incident !== null && incident == "") {
       return res.status(401).json({ errro: "Operação não permitida" });

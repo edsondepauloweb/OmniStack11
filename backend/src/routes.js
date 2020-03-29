@@ -4,7 +4,7 @@ const connection = require("./database/connections");
 
 const OngController = require("./controllers/OngController");
 const IncidentsController = require("./controllers/IncidentsController");
-const ProfillerController = require("./controllers/ProfillerController");
+const ProfileController = require("./controllers/ProfileController");
 const SessionController = require("./controllers/SessionController");
 
 const routes = express.Router();
@@ -22,7 +22,7 @@ routes.post("/ongs", OngController.create);
 
 routes.post("/session", SessionController.create);
 
-routes.get("/profiller", ProfillerController.index);
+routes.get("/profile", ProfileController.index);
 
 routes.get("/incidents", IncidentsController.index);
 

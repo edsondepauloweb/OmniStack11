@@ -10,15 +10,13 @@ module.exports = {
   async create(req, res) {
     const { name, email, whatsapp, city, uf } = req.body;
 
-    await connection("ongs")
-      .returning("id")
-      .insert({
-        name,
-        email,
-        whatsapp,
-        city,
-        uf
-      });
+    const [id] = await connection("ongs").insert({
+      name,
+      email,
+      whatsapp,
+      city,
+      uf
+    });
 
     return res.json({ id });
   }

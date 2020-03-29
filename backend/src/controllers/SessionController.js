@@ -4,15 +4,14 @@ module.exports = {
   async create(req, res) {
     const { id } = req.body;
 
-    const ong = await connection("ongs")
+    const [ong] = await connection("ongs")
       .where("id", id)
-      .select("*")
-      .fist();
+      .select("*");
 
     if (!ong) {
       return res.status(400).json({ error: "ONG não existe" });
     }
 
-    return res.json({ ong });
+    return res.json(ong);
   }
 };
